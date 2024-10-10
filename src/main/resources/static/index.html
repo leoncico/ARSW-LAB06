@@ -11,28 +11,30 @@
     <script src="js/app.js"></script>
 </head>
 <body>
-    <h1>Blueprints</h1>
-
-    <div>
-        <label for="author">Author: </label>
-        <input type="text" id="author" name="author">
-        <button>Get blueprints</button>
-    </div>
-
     <div class="container">
-        <div class="blueprints">
-            <h2>JohnConnor's blueprints:</h2>
-            <table id="tableBlueprints">
+        <h1>Blueprints</h1>
+
+        <div class="form-group">
+            <label for="author">Author: </label>
+            <input type="text" id="author" name="author" class="form-control">
+            <button id="searchButton" class="btn btn-primary">Get blueprints</button>
+        </div>
+
+        <table id="tableBlueprints" class="table">
+            <thead>
                 <tr>
                     <th>Blueprint name</th>
                     <th>Number of points</th>
                     <th>Action</th>
                 </tr>
-                <tbody>
-                </tbody>
-            </table>
-            <div id="totalPoints">Total user points:</div>
-        </div>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+
+        <div id="totalPoints">Total user points: 0</div>
     </div>
 </body>
 </html>
+
