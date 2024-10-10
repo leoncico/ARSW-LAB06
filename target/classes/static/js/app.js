@@ -1,3 +1,5 @@
+var api = apiclient;
+
 var App = (function () {
     let authorName = '';
     let blueprints = [];
@@ -7,15 +9,12 @@ var App = (function () {
     }
 
     function updateBlueprintsList(author) {
- 
-        
-        apimock.getBlueprintsByAuthor(author, function (blueprintsData) {
+        api.getBlueprintsByAuthor(author, function (blueprintsData) {
             if (!blueprintsData) {
                 alert("No blueprints found for author: " + author);
                 return;
             }
 
-            
             blueprints = blueprintsData.map(function (blueprint) {
                 return {
                     name: blueprint.name,
@@ -23,33 +22,55 @@ var App = (function () {
                 };
             });
 
-            
             $("#tableBlueprints tbody").empty();
 
             const rows = blueprints.map(function (blueprint) {
                 return `<tr>
                             <td>${blueprint.name}</td>
                             <td>${blueprint.points}</td>
+                            <td><button class="open-btn" data-name="${blueprint.name}">Open</button></td>
                         </tr>`;
             });
             
-            
             $("#tableBlueprints tbody").append(rows.join(''));
-
-            
+    
             let totalPoints = blueprints.reduce(function (sum, blueprint) {
                 return sum + blueprint.points;
             }, 0);
 
-            
             $("#totalPoints").text("Total user points: " + totalPoints);
         });
     }
 
+    function drawBlueprint(author, bpname){
+        api.getBlueprintsByNameAndAuthor(author,bpname, function (blueprint) {
+            if (!blueprint) {
+                alert("Blueprint not found.");
+                return;
+            }
+            $("#currentBlueprintName").text(`Drawing: ${bpname}`);
+            const canvas = document.getElementById("blueprintCanvas");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const points = blueprint.points;
+            if (points.length > 0) {
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, points[0].y);
+
+                for (let i = 1; i < points.length; i++) {
+                    ctx.lineTo(points[i].x, points[i].y);
+                }
+
+                ctx.stroke();
+                ctx.closePath();
+            }
+        });
+    }
     
     return {
         setAuthor: setAuthor,
-        updateBlueprintsList: updateBlueprintsList
+        updateBlueprintsList: updateBlueprintsList,
+        drawBlueprint: drawBlueprint
     };
 })();
 
@@ -62,6 +83,12 @@ $(document).ready(function () {
         } else {
             alert("Please enter an author name.");
         }
+    });
+
+    $("#tableBlueprints").on("click", ".open-btn", function () {
+        const blueprintName = $(this).data("name"); // Obtener el nombre del plano del atributo data
+        const authorName = $("#author").val();
+        App.drawBlueprint(authorName, blueprintName); // Dibuja el plano en el canvas
     });
 });
 

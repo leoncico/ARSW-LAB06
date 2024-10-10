@@ -55,7 +55,6 @@ public class BlueprintsServices {
     public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoundException{
         Blueprint blueprint = bpp.getBlueprint(author, name);
         //bpf.filter(blueprint);
-        System.out.println(blueprint.getPoints().size());
         return blueprint;
     }
     
