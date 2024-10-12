@@ -3,6 +3,7 @@ var api = apiclient;
 var App = (function () {
     let authorName = '';
     let blueprints = [];
+    
 
     function setAuthor(newAuthor) {
         authorName = newAuthor;
@@ -67,10 +68,29 @@ var App = (function () {
         });
     }
     
+    function initCanvas(){
+        var canvas = document.getElementById("blueprintCanvas");
+        var context = canvas.getContext("2d");
+        if(window.PointerEvent) {
+            canvas.addEventListener("pointerdown", function(event){
+                alert('pointerdown at '+event.pageX+','+event.pageY);  
+                
+            });
+          }
+          else {
+            canvas.addEventListener("mousedown", function(event){
+                        alert('mousedown at '+event.clientX+','+event.clientY);  
+    
+              }
+            );
+        }
+    }
+
     return {
         setAuthor: setAuthor,
         updateBlueprintsList: updateBlueprintsList,
-        drawBlueprint: drawBlueprint
+        drawBlueprint: drawBlueprint,
+        initCanvas: initCanvas
     };
 })();
 
@@ -86,9 +106,9 @@ $(document).ready(function () {
     });
 
     $("#tableBlueprints").on("click", ".open-btn", function () {
-        const blueprintName = $(this).data("name"); // Obtener el nombre del plano del atributo data
+        const blueprintName = $(this).data("name");
         const authorName = $("#author").val();
-        App.drawBlueprint(authorName, blueprintName); // Dibuja el plano en el canvas
+        App.drawBlueprint(authorName, blueprintName);
     });
 });
 
