@@ -1,8 +1,10 @@
-var api = apiclient;
+var api = apimock;
 
 var App = (function () {
     let authorName = '';
     let blueprints = [];
+    let currentBlueprint = null; // Almacena el plano actual
+    let currentPoints = [];
     
 
     function setAuthor(newAuthor) {
@@ -43,47 +45,74 @@ var App = (function () {
         });
     }
 
-    function drawBlueprint(author, bpname){
-        api.getBlueprintsByNameAndAuthor(author,bpname, function (blueprint) {
+    
+    function drawBlueprint(author, bpname) {
+        api.getBlueprintsByNameAndAuthor(author, bpname, function (blueprint) {
             if (!blueprint) {
                 alert("Blueprint not found.");
                 return;
             }
+            currentBlueprint = bpname; 
+            currentPoints = blueprint.points;
             $("#currentBlueprintName").text(`Drawing: ${bpname}`);
-            const canvas = document.getElementById("blueprintCanvas");
-            const ctx = canvas.getContext("2d");
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const points = blueprint.points;
-            if (points.length > 0) {
-                ctx.beginPath();
-                ctx.moveTo(points[0].x, points[0].y);
-
-                for (let i = 1; i < points.length; i++) {
-                    ctx.lineTo(points[i].x, points[i].y);
-                }
-
-                ctx.stroke();
-                ctx.closePath();
-            }
+            redrawCanvas();
         });
     }
     
-    function initCanvas(){
+    //Lo Separe del Draw para poder reutilizarlo Xd
+    function redrawCanvas() {
+        const canvas = document.getElementById("blueprintCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (currentPoints.length > 0) {
+            ctx.beginPath();
+            ctx.moveTo(currentPoints[0].x, currentPoints[0].y);
+            for (let i = 1; i < currentPoints.length; i++) {
+                ctx.lineTo(currentPoints[i].x, currentPoints[i].y);
+            }
+            ctx.stroke();
+            ctx.closePath();
+        }
+    }
+
+    //Ta igual solo que ahora llama a la funcion de manejar eventos
+    function initCanvas() {
         var canvas = document.getElementById("blueprintCanvas");
-        var context = canvas.getContext("2d");
-        if(window.PointerEvent) {
-            canvas.addEventListener("pointerdown", function(event){
-                alert('pointerdown at '+event.pageX+','+event.pageY);  
+
+        if (window.PointerEvent) {
+            canvas.addEventListener("pointerdown", function (event) {
+                handleCanvasClick(event);
+                alert('pointerdown at '+event.pageX+','+event.pageY); 
+            });
+        } else {
+            canvas.addEventListener("mousedown", function (event) {
+                handleCanvasClick(event);
+                alert('mousedown at '+event.clientX+','+event.clientY);
                 
             });
-          }
-          else {
-            canvas.addEventListener("mousedown", function(event){
-                        alert('mousedown at '+event.clientX+','+event.clientY);  
-    
-              }
-            );
         }
+    }
+
+    //Para capturar el Evento y decirle en que posición va a ir el nuevo punto
+    function handleCanvasClick(event) {
+        const canvas = document.getElementById("blueprintCanvas");
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        if (currentBlueprint) {
+            addPointToCurrentBlueprint(x, y);
+        } else {
+            alert('No blueprint selected.');
+        }
+    }
+
+    //Cosa para agregar nuevo punto  y redibujar con el nuevo segmento
+    function addPointToCurrentBlueprint(x, y) {
+        currentPoints.push({ x: x, y: y }); 
+        console.log(`New point added to ${currentBlueprint}: (${x}, ${y})`);
+        redrawCanvas();
     }
 
     return {
