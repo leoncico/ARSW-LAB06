@@ -24,7 +24,25 @@ apiclient=(function(){
                     alert( "error" );
                 })
 
-		}
+		},
+
+        updateBlueprintPoints:function(authorName, currentBlueprint, points, callback){
+            $.ajax({
+                url: `/blueprints/${authorName}/${currentBlueprint}`,
+                type: 'PUT',
+                data: JSON.stringify(points),
+                contentType: "application/json"
+            })
+                .then(function(){
+                    callback(points)
+                },
+                function(){
+                    alert("Error updating the points")
+                }
+
+            );
+
+        }
     }
 
 })();

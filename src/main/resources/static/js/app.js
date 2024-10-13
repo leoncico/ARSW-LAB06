@@ -1,6 +1,6 @@
-var api = apimock;
 
 var App = (function () {
+    var api = apiclient;
     let authorName = '';
     let blueprints = [];
     let currentBlueprint = null; // Almacena el plano actual
@@ -83,13 +83,12 @@ var App = (function () {
         if (window.PointerEvent) {
             canvas.addEventListener("pointerdown", function (event) {
                 handleCanvasClick(event);
-                alert('pointerdown at '+event.pageX+','+event.pageY); 
+                //alert('pointerdown at '+event.pageX+','+event.pageY); 
             });
         } else {
             canvas.addEventListener("mousedown", function (event) {
                 handleCanvasClick(event);
-                alert('mousedown at '+event.clientX+','+event.clientY);
-                
+                //alert('mousedown at '+event.clientX+','+event.clientY);
             });
         }
     }
@@ -111,33 +110,76 @@ var App = (function () {
     //Cosa para agregar nuevo punto  y redibujar con el nuevo segmento
     function addPointToCurrentBlueprint(x, y) {
         currentPoints.push({ x: x, y: y }); 
-        console.log(`New point added to ${currentBlueprint}: (${x}, ${y})`);
+        //console.log(`New point added to ${currentBlueprint}: (${x}, ${y})`);
         redrawCanvas();
     }
+
+    function updatePoints(){
+        const dataToSend = {
+            points: currentPoints
+        };
+        api.updateBlueprintPoints(authorName, currentBlueprint, dataToSend, function(points){
+            const pointsList = JSON.stringify(points, null, 1);
+            alert("Updated points:\n" + pointsList);
+        });
+        console.log(authorName);
+        //App.updateBlueprintsList();
+    }
+
+    function addEventsButtons(){
+        $("#searchButton").click(function () {
+                    let authorName = $("#author").val();
+                    if (authorName) {
+                        App.setAuthor(authorName);
+                        App.updateBlueprintsList(authorName);
+                    } else {
+                        alert("Please enter an author name.");
+                    }
+                });
+            
+        $("#tableBlueprints").on("click", ".open-btn", function () {
+            const blueprintName = $(this).data("name");
+            const authorName = $("#author").val();
+            App.drawBlueprint(authorName, blueprintName);
+        });
+
+        $('#saveButton').click(function () {
+            if(currentBlueprint){
+                App.updatePoints(currentBlueprint)
+            }
+            else{
+                alert('No blueprint selected.');
+            }
+        });
+
+    }
+
 
     return {
         setAuthor: setAuthor,
         updateBlueprintsList: updateBlueprintsList,
         drawBlueprint: drawBlueprint,
-        initCanvas: initCanvas
+        initCanvas: initCanvas,
+        addEventsButtons: addEventsButtons,
+        updatePoints: updatePoints
     };
 })();
 
-$(document).ready(function () {
-    $("button").click(function () {
-        var authorName = $("#author").val();
-        if (authorName) {
-            App.setAuthor(authorName);
-            App.updateBlueprintsList(authorName,event);
-        } else {
-            alert("Please enter an author name.");
-        }
-    });
+// $(document).ready(function () {
+//     $("button").click(function () {
+//         var authorName = $("#author").val();
+//         if (authorName) {
+//             App.setAuthor(authorName);
+//             App.updateBlueprintsList(authorName,event);
+//         } else {
+//             alert("Please enter an author name.");
+//         }
+//     });
 
-    $("#tableBlueprints").on("click", ".open-btn", function () {
-        const blueprintName = $(this).data("name");
-        const authorName = $("#author").val();
-        App.drawBlueprint(authorName, blueprintName);
-    });
-});
+//     $("#tableBlueprints").on("click", ".open-btn", function () {
+//         const blueprintName = $(this).data("name");
+//         const authorName = $("#author").val();
+//         App.drawBlueprint(authorName, blueprintName);
+//     });
+// });
 
