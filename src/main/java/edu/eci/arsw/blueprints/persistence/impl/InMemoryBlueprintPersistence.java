@@ -5,7 +5,6 @@
  */
 package edu.eci.arsw.blueprints.persistence.impl;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -75,9 +74,9 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
                 blueprintsBy.add(blueprint);
             }
         }
-        if(blueprintsBy.isEmpty()){
-            throw new BlueprintNotFoundException("No blueprints found for author: " + autor);
-        }
+        // if(blueprintsBy.isEmpty()){
+        //     throw new BlueprintNotFoundException("No blueprints found for author: " + autor);
+        // }
         return blueprintsBy;
     }
 
@@ -97,5 +96,14 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     @Override
     public void updateBlueprint(Blueprint blueprint, List<Point> points){
         blueprint.setPoints(points);
+    }
+
+    @Override
+    public void deleteBlueprint(String author, String bpname) throws BlueprintNotFoundException{
+        if (blueprints.containsKey(new Tuple<>(author,bpname))){
+            blueprints.remove(new Tuple<>(author, bpname));
+        }else{
+            throw new BlueprintNotFoundException("No blueprints found for author: " + author + "And name: " + bpname);
+        }
     }
 }

@@ -12,8 +12,10 @@ var App = (function () {
     }
 
     function updateBlueprintsList(author) {
-
-
+        const canvas = document.getElementById("blueprintCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        currentBlueprint="";
         api.getBlueprintsByAuthor(author, function (blueprintsData) {
             if (!blueprintsData) {
                 alert("No blueprints found for author: " + author);
@@ -45,6 +47,7 @@ var App = (function () {
 
             $("#totalPoints").text("Total user points: " + totalPoints);
         });
+        $("#currentBlueprintName").text(`Drawing: None`);
     }
 
     
@@ -60,13 +63,20 @@ var App = (function () {
             redrawCanvas();
         });
     }
+
+    function clearCanvas(){
+        const canvas = document.getElementById("blueprintCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    }
     
     //Lo Separe del Draw para poder reutilizarlo Xd
     function redrawCanvas() {
         const canvas = document.getElementById("blueprintCanvas");
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+        //clearCanvas();
         if (currentPoints) {
             ctx.beginPath();
             ctx.moveTo(currentPoints[0].x, currentPoints[0].y);
@@ -147,6 +157,7 @@ var App = (function () {
         const canvas = document.getElementById("blueprintCanvas");
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //clearCanvas();
         currentPoints = [];
         currentBlueprint = bpname;
         
@@ -158,6 +169,19 @@ var App = (function () {
 
         $("#currentBlueprintName").text(`Drawing: ${bpname}`);
 
+    }
+
+    function deleteBlueprint(author, currentBlueprint){
+        const canvas = document.getElementById("blueprintCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        api.deleteBlueprint(author,currentBlueprint).
+        then(function(){
+            updateBlueprintsList(author);
+        });
+        currentBlueprint="";
+        currentPoints=[];
+        $("#currentBlueprintName").text(`Drawing: None`);
     }
 
     function addEventsButtons(){
@@ -202,6 +226,14 @@ var App = (function () {
             }
 
             newBlueprint(authorName, bpName);
+        });
+
+        $("#deleteButton").click(function () {
+            if (currentBlueprint){
+                deleteBlueprint(authorName,currentBlueprint);
+            } else {
+                alert("Please select a bluePrint");
+            }
         });
 
     }

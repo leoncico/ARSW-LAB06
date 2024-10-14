@@ -39,4 +39,6 @@ public interface BlueprintsPersistence {
     public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException;
     
     public void updateBlueprint(Blueprint blueprint, List<Point> points);
+
+    public void deleteBlueprint(String author, String bpname) throws BlueprintNotFoundException;
 }

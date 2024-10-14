@@ -55,7 +55,16 @@ apiclient=(function(){
                     console.log("Error:", error);
                 }
             });
-        }
+        },
+
+        deleteBlueprint:function(authorName, currentBlueprint){
+            return $.ajax({
+                url: `/blueprints/${authorName}/${currentBlueprint}`,
+                type: 'DELETE',
+                //data: JSON.stringify(currentBlueprint),
+                contentType: "application/json"
+            });
+        },
         
     }
 
