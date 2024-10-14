@@ -1,6 +1,6 @@
 
 var App = (function () {
-    var api = apiclient;
+    let api = apiclient;
     let authorName = '';
     let blueprints = [];
     let currentBlueprint = null; // Almacena el plano actual
@@ -12,6 +12,8 @@ var App = (function () {
     }
 
     function updateBlueprintsList(author) {
+
+
         api.getBlueprintsByAuthor(author, function (blueprintsData) {
             if (!blueprintsData) {
                 alert("No blueprints found for author: " + author);
@@ -27,7 +29,7 @@ var App = (function () {
 
             $("#tableBlueprints tbody").empty();
 
-            const rows = blueprints.map(function (blueprint) {
+            let rows = blueprints.map(function (blueprint) {
                 return `<tr>
                             <td>${blueprint.name}</td>
                             <td>${blueprint.points}</td>
@@ -78,7 +80,7 @@ var App = (function () {
 
     //Ta igual solo que ahora llama a la funcion de manejar eventos
     function initCanvas() {
-        var canvas = document.getElementById("blueprintCanvas");
+        const canvas = document.getElementById("blueprintCanvas");
 
         if (window.PointerEvent) {
             canvas.addEventListener("pointerdown", function (event) {
@@ -114,24 +116,35 @@ var App = (function () {
         redrawCanvas();
     }
 
-    function updatePoints(){
+    function updatePoints(blueprint, author){
         const dataToSend = {
             points: currentPoints
         };
-        api.updateBlueprintPoints(authorName, currentBlueprint, dataToSend, function(points){
-            const pointsList = JSON.stringify(points, null, 1);
-            alert("Updated points:\n" + pointsList);
+        var promise = api.updateBlueprintPoints(author, blueprint, dataToSend);
+
+        updatePromise(promise).then(function() {
+            updateBlueprintsList(author);
         });
-        console.log(authorName);
-        //App.updateBlueprintsList();
+    }
+
+    function updatePromise(promise){
+        promise.then(
+            function(points){
+                alert("Updated points\n" + "New number of points: " + currentPoints.length);
+            },
+            function(){
+                alert("Update failed")
+            }  
+        );
+        return promise;
     }
 
     function addEventsButtons(){
         $("#searchButton").click(function () {
                     let authorName = $("#author").val();
                     if (authorName) {
-                        App.setAuthor(authorName);
-                        App.updateBlueprintsList(authorName);
+                        setAuthor(authorName);
+                        updateBlueprintsList(authorName);
                     } else {
                         alert("Please enter an author name.");
                     }
@@ -140,12 +153,12 @@ var App = (function () {
         $("#tableBlueprints").on("click", ".open-btn", function () {
             const blueprintName = $(this).data("name");
             const authorName = $("#author").val();
-            App.drawBlueprint(authorName, blueprintName);
+            drawBlueprint(authorName, blueprintName);
         });
 
         $('#saveButton').click(function () {
             if(currentBlueprint){
-                App.updatePoints(currentBlueprint)
+                updatePoints(currentBlueprint, authorName)
             }
             else{
                 alert('No blueprint selected.');

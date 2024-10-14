@@ -26,21 +26,21 @@ apiclient=(function(){
 
 		},
 
-        updateBlueprintPoints:function(authorName, currentBlueprint, points, callback){
-            $.ajax({
+        updateBlueprintPoints:function(authorName, currentBlueprint, points){
+            return $.ajax({
                 url: `/blueprints/${authorName}/${currentBlueprint}`,
                 type: 'PUT',
                 data: JSON.stringify(points),
                 contentType: "application/json"
-            })
-                .then(function(){
-                    callback(points)
-                },
-                function(){
-                    alert("Error updating the points")
-                }
-
-            );
+            });
+            
+                // .then(function(){
+                //     callback(points)
+                // },
+                // function(){
+                //     alert("Error updating the points")
+                // }
+            //);
 
         }
     }
