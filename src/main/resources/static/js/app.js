@@ -130,8 +130,7 @@ var App = (function () {
     function updatePromise(promise){
         promise.then(
             function(points){
-                const pointsList = JSON.stringify(points, null, 1);
-                alert("Updated points:\n" + pointsList);
+                alert("Updated points\n" + "New number of points: " + currentPoints.length);
             },
             function(){
                 alert("Update failed")
