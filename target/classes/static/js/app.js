@@ -139,6 +139,16 @@ var App = (function () {
         return promise;
     }
 
+    function newBlueprint(author, bpname){
+        const canvas = document.getElementById("blueprintCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        currentPoints = [];
+        currentBlueprint = bpname;
+        api.newBlueprint(author, bpname, currentPoints);
+
+    }
+
     function addEventsButtons(){
         $("#searchButton").click(function () {
                     let authorName = $("#author").val();
@@ -163,6 +173,24 @@ var App = (function () {
             else{
                 alert('No blueprint selected.');
             }
+        });
+
+        $('#newButton').click(function () {
+            if(currentBlueprint){
+                currentBlueprint = null;
+                redrawCanvas();
+            }
+            var bpName = "";
+
+            while(!bpName){
+                bpName = prompt("Enter the blueprint name:");
+                
+                if(!bpName){
+                    alert("Fill the info")
+                }
+            }
+
+            newBlueprint(authorName, bpName);
         });
 
     }

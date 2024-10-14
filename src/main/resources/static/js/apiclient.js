@@ -33,16 +33,32 @@ apiclient=(function(){
                 data: JSON.stringify(points),
                 contentType: "application/json"
             });
-            
-                // .then(function(){
-                //     callback(points)
-                // },
-                // function(){
-                //     alert("Error updating the points")
-                // }
-            //);
+        },
 
+        newBlueprint: function(authorName, bpName, points){
+
+            const newBlueprint = {
+                author: authorName,
+                name: bpName,
+                pnts: points
+            };
+
+            $.ajax({
+                url: "/blueprints", // La URL que apunta a tu controlador
+                type: "POST",
+                data: JSON.stringify({
+                    newBlueprint
+                }),
+                contentType: "application/json", // Especificamos que el contenido es JSON
+                success: function(response) {
+                    console.log("Blueprint created successfully");
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+                }
+            });
         }
+        
     }
 
 })();
