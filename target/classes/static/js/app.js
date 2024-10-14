@@ -23,7 +23,7 @@ var App = (function () {
             blueprints = blueprintsData.map(function (blueprint) {
                 return {
                     name: blueprint.name,
-                    points: blueprint.points.length
+                    points: blueprint.points ? blueprint.points.length : 0
                 };
             });
 
@@ -67,7 +67,7 @@ var App = (function () {
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        if (currentPoints.length > 0) {
+        if (currentPoints) {
             ctx.beginPath();
             ctx.moveTo(currentPoints[0].x, currentPoints[0].y);
             for (let i = 1; i < currentPoints.length; i++) {
@@ -76,6 +76,10 @@ var App = (function () {
             ctx.stroke();
             ctx.closePath();
         }
+        else{
+            currentPoints = [];
+        }
+
     }
 
     //Ta igual solo que ahora llama a la funcion de manejar eventos
@@ -145,7 +149,14 @@ var App = (function () {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         currentPoints = [];
         currentBlueprint = bpname;
-        api.newBlueprint(author, bpname, currentPoints);
+        
+
+        api.newBlueprint(author, bpname, currentPoints).
+            then(function(){
+                updateBlueprintsList(author);
+            });
+
+        $("#currentBlueprintName").text(`Drawing: ${bpname}`);
 
     }
 

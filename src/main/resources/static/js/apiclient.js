@@ -43,12 +43,10 @@ apiclient=(function(){
                 pnts: points
             };
 
-            $.ajax({
+            return $.ajax({
                 url: "/blueprints", // La URL que apunta a tu controlador
                 type: "POST",
-                data: JSON.stringify({
-                    newBlueprint
-                }),
+                data: JSON.stringify(newBlueprint),
                 contentType: "application/json", // Especificamos que el contenido es JSON
                 success: function(response) {
                     console.log("Blueprint created successfully");
