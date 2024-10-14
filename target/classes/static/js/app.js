@@ -120,14 +120,24 @@ var App = (function () {
         const dataToSend = {
             points: currentPoints
         };
-        api.updateBlueprintPoints(author, blueprint, dataToSend, function(points){
-            const pointsList = JSON.stringify(points, null, 1);
-            alert("Updated points:\n" + pointsList);
-        })
-            .then()
-                updateBlueprintsList(author);
-            ;
-        
+        var promise = api.updateBlueprintPoints(author, blueprint, dataToSend);
+
+        updatePromise(promise).then(function() {
+            updateBlueprintsList(author);
+        });
+    }
+
+    function updatePromise(promise){
+        promise.then(
+            function(points){
+                const pointsList = JSON.stringify(points, null, 1);
+                alert("Updated points:\n" + pointsList);
+            },
+            function(){
+                alert("Update failed")
+            }  
+        );
+        return promise;
     }
 
     function addEventsButtons(){
