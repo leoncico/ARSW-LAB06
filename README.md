@@ -53,7 +53,13 @@ R/: Se agregan las depencias correspondientes al pom.xml
     src/main/resources/static
     ```
 
+R/: Se crea el directorio como se indica
+
+![](img/01.PNG)
+
 2. Cree, en el directorio anterior, la página index.html, sólo con lo básico: título, campo para la captura del autor, botón de 'Get blueprints', campo <div> donde se mostrará el nombre del autor seleccionado, [la tabla HTML](https://www.w3schools.com/html/html_tables.asp) donde se mostrará el listado de planos (con sólo los encabezados), y un campo <div> donde se mostrará el total de puntos de los planos del autor. Recuerde asociarle identificadores a dichos componentes para facilitar su búsqueda mediante selectores.
+
+![](img/02.PNG)
 
 3. En el elemento \<head\> de la página, agregue las referencia a las librerías de jQuery, Bootstrap y a la hoja de estilos de Bootstrap. 
     ```html
@@ -68,7 +74,7 @@ R/: Se agregan las depencias correspondientes al pom.xml
           href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
     </head>
     ```
-
+![](img/03.PNG)
 
 4. Suba la aplicación (mvn spring-boot:run), y rectifique:
     1. Que la página sea accesible desde:
@@ -77,17 +83,27 @@ R/: Se agregan las depencias correspondientes al pom.xml
     ```
     2. Al abrir la consola de desarrollador del navegador, NO deben aparecer mensajes de error 404 (es decir, que las librerías de JavaScript se cargaron correctamente).
 
+![](img/04.PNG)
+
+R/: Se accede exitosamente a la URL sin errores en consola
+
 ## Front-End - Lógica
 
 1. Ahora, va a crear un Módulo JavaScript que, a manera de controlador, mantenga los estados y ofrezca las operaciones requeridas por la vista. Para esto tenga en cuenta el [patrón Módulo de JavaScript](https://toddmotto.com/mastering-the-module-pattern/), y cree un módulo en la ruta static/js/app.js .
 
+![](img/05.PNG)
+
 2. Copie el módulo provisto (apimock.js) en la misma ruta del módulo antes creado. En éste agréguele más planos (con más puntos) a los autores 'quemados' en el código.
+
+![](img/06.PNG)
 
 3. Agregue la importación de los dos nuevos módulos a la página HTML (después de las importaciones de las librerías de jQuery y Bootstrap):
     ```html
     <script src="js/apimock.js"></script>
     <script src="js/app.js"></script>
     ```
+![](img/07.PNG)
+
 
 3. Haga que el módulo antes creado mantenga de forma privada:
     * El nombre del autor seleccionado.
@@ -95,6 +111,9 @@ R/: Se agregan las depencias correspondientes al pom.xml
 
     Junto con una operación pública que permita cambiar el nombre del autor actualmente seleccionado.
 
+![](img/08.PNG)
+
+R/: Se agrega la operación para cambiar el nombre del autor seleccionado (setAuthor) la cuál modifica el valor de la variable global privada authorName
 
 4. Agregue al módulo 'app.js' una operación pública que permita actualizar el listado de los planos, a partir del nombre de su autor (dado como parámetro). Para hacer esto, dicha operación debe invocar la operación 'getBlueprintsByAuthor' del módulo 'apimock' provisto, enviándole como _callback_ una función que:
 
@@ -104,20 +123,45 @@ R/: Se agregan las depencias correspondientes al pom.xml
 
     * Sobre cualquiera de los dos listados (el original, o el transformado mediante 'map'), aplique un 'reduce' que calcule el número de puntos. Con este valor, use jQuery para actualizar el campo correspondiente dentro del DOM.
 
+![](img/09.PNG)
+
+R/: Con el llamado a la api obtenemos la lista de todos los planos del autor seleccionado (blueprintsData). Posteriormente a esta lista se le aplica un map, creando así una nueva lista (blueprints) pero cada objeto tendrá solo el nombre del plano y la cantidad de puntos. Posteriormente a blueprints se le aplica otro map resultando en una lista de elementos HTML donde cada uno será una fila en la tabla de planos, obteniendo de cada uno su nombre y la cantidad de puntos. Finalmente se calcula el total de puntos que tiene el autoraplicando la función reduce, la cuál recorre cada plano y acumula en la variable sum la sumatoria de la cantidad de puntos. Dicha variable inicia en 0 (especificado en el segundo parametro de reduce)
+
 5. Asocie la operación antes creada (la de app.js) al evento 'on-click' del botón de consulta de la página.
 
+![](img/10.PNG)
+
+R/: Se crea el evento asociado al clickeo del botón de busqueda, el cuál ejecuta una función que obtiene el nombre del autor, se asigna a la variable de authorName y finalmente llena la lista de planos de dicho autor.
+
 6. Verifique el funcionamiento de la aplicación. Inicie el servidor, abra la aplicación HTML5/JavaScript, y rectifique que al ingresar un usuario existente, se cargue el listado del mismo.
+
+![](img/11.PNG)
 
 ## Para la próxima semana
 
 8. A la página, agregue un [elemento de tipo Canvas](https://www.w3schools.com/html/html5_canvas.asp), con su respectivo identificador. Haga que sus dimensiones no sean demasiado grandes para dejar espacio para los otros componentes, pero lo suficiente para poder 'dibujar' los planos.
 
+![](img/12.PNG)
+
+R/: Se crea el emento canvas con una dimensión de 500 por 500 píxeles
+
 9. Al módulo app.js agregue una operación que, dado el nombre de un autor, y el nombre de uno de sus planos dados como parámetros, haciendo uso del método getBlueprintsByNameAndAuthor de apimock.js y de una función _callback_:
     * Consulte los puntos del plano correspondiente, y con los mismos dibuje consectivamente segmentos de recta, haciendo uso [de los elementos HTML5 (Canvas, 2DContext, etc) disponibles](https://www.w3schools.com/html/tryit.asp?filename=tryhtml5_canvas_tut_path)* Actualice con jQuery el campo <div> donde se muestra el nombre del plano que se está dibujando (si dicho campo no existe, agruéguelo al DOM).
 
-10. Verifique que la aplicación ahora, además de mostrar el listado de los planos de un autor, permita seleccionar uno de éstos y graficarlo. Para esto, haga que en las filas generadas para el punto 5 incluyan en la última columna un botón con su evento de clic asociado a la operación hecha anteriormente (enviándo como parámetro los nombres correspondientes).
+![](img/13.PNG)
 
-11. Verifique que la aplicación ahora permita: consultar los planos de un auto y graficar aquel que se seleccione.
+R/: Se crea la función drawBlueprint la cuál llama a la api para obtener el plano dado el nombre de este y su autor, luego verifica que el objeto se encontró, en caso de que si obtiene el canvas, lo limpia y empieza a dar trazos teniendo en cuenta las coordenadas de cada punto, hasta llegar al punto final de la lista points.  
+
+10.  Verifique que la aplicación ahora, además de mostrar el listado de los planos de un autor, permita seleccionar uno de éstos y graficarlo. Para esto, haga que en las filas generadas para el punto 5 incluyan en la última columna un botón con su evento de clic asociado a la operación hecha anteriormente (enviándo como parámetro los nombres correspondientes).
+
+![](img/14.PNG)
+![](img/15.PNG)
+
+R/: Ahora cuando se listan los planos se agrega el botón para abrir el dibujo, relacionando al botón con su correspondiente evento 
+
+11.    Verifique que la aplicación ahora permita: consultar los planos de un autor y graficar aquel que se seleccione.
+
+![](img/16.PNG)
 
 12. Una vez funcione la aplicación (sólo front-end), haga un módulo (llámelo 'apiclient') que tenga las mismas operaciones del 'apimock', pero que para las mismas use datos reales consultados del API REST. Para lo anterior revise [cómo hacer peticiones GET con jQuery](https://api.jquery.com/jquery.get/), y cómo se maneja el esquema de _callbacks_ en este contexto.
 
