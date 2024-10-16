@@ -272,16 +272,16 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 
 	* Se borre el canvas actual.
 
-[](img/2.4.3.png)
+    [](img/2.4.3.png)
     
 
     R/: usamos un metodo llamado clearCanvas para agilizar la limpiesa del canvas.
 
 	* Se solicite el nombre del nuevo 'blueprint' (usted decide la manera de hacerlo).
 
-[](img/2.4.5.png)
+    [](img/2.4.5.png)
 
-[](img/2.4.6.png)
+    [](img/2.4.6.png)
 
     R/: Al darle al botón de "create new blueprint" nos abre una ventana que nos pide el nombre del nuevo print para el autor en el que nos encontramos parados, al ingresar el nombre, el plano se agrega a la lista de blueprints.
 	
@@ -295,9 +295,9 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 
 	2. Hacer GET a este mismo recurso, para actualizar el listado de planos y el puntaje del usuario.
     
-[](img/2.4.2.png)
+    [](img/2.4.2.png)
 
-[](img/2.4.7.png)
+    [](img/2.4.7.png)
 
     R/: Dentro de este metodo llamamos al metodo que obtiene la petición POST y tambien al metodo de updateBluePrintList que es el que actualiza el listado de planos y tambien el puntaje, haciendo uso del recurso GET.
 
