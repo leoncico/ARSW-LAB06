@@ -165,12 +165,19 @@ R/: Ahora cuando se listan los planos se agrega el botón para abrir el dibujo, 
 
 12. Una vez funcione la aplicación (sólo front-end), haga un módulo (llámelo 'apiclient') que tenga las mismas operaciones del 'apimock', pero que para las mismas use datos reales consultados del API REST. Para lo anterior revise [cómo hacer peticiones GET con jQuery](https://api.jquery.com/jquery.get/), y cómo se maneja el esquema de _callbacks_ en este contexto.
 
-13. Modifique el código de app.js de manera que sea posible cambiar entre el 'apimock' y el 'apiclient' con sólo una línea de código.
+![](img/17.PNG)
 
-14. Revise la [documentación y ejemplos de los estilos de Bootstrap](https://v4-alpha.getbootstrap.com/examples/) (ya incluidos en el ejercicio), agregue los elementos necesarios a la página para que sea más vistosa, y más cercana al mock dado al inicio del enunciado.
+R/: Se crean las dos operaciones que realizan la petición get a la ruta correspondiente del API REST, cuando son exitosas se envía la función callback con la información a la app, la cuál renderiza ya sea la lista de planos o el plano dibujado
 
+13.  Modifique el código de app.js de manera que sea posible cambiar entre el 'apimock' y el 'apiclient' con sólo una línea de código.
 
+![](img/18.PNG)
 
+R/: Se crea la variable api la cuál se puede cambiar entre apliclient o apimock, para cambiar entre la API REST o el back temporal 
+
+14.  Revise la [documentación y ejemplos de los estilos de Bootstrap](https://v4-alpha.getbootstrap.com/examples/) (ya incluidos en el ejercicio), agregue los elementos necesarios a la página para que sea más vistosa, y más cercana al mock dado al inicio del enunciado.
+
+![](img/)
 
 #### Escuela Colombiana de Ingeniería
 #### Procesos de desarrollo de software - PDSW
