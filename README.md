@@ -273,6 +273,7 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 	* Se borre el canvas actual.
 
     [](img/2.4.3.png)
+    
 
     R/: usamos un metodo llamado clearCanvas para agilizar la limpiesa del canvas.
 
