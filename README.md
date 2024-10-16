@@ -303,7 +303,8 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 
 5. Agregue el botón 'DELETE', de manera que (también con promesas):
     
-    ![](img/2.5.1.png)
+    <img width="276" alt="2 5 1" src="https://github.com/user-attachments/assets/345fbbee-84e3-4165-9b97-bffd7597a6ed">
+
 
 	* Borre el canvas.
 
