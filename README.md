@@ -177,7 +177,7 @@ R/: Se crea la variable api la cuál se puede cambiar entre apliclient o apimock
 
 14.  Revise la [documentación y ejemplos de los estilos de Bootstrap](https://v4-alpha.getbootstrap.com/examples/) (ya incluidos en el ejercicio), agregue los elementos necesarios a la página para que sea más vistosa, y más cercana al mock dado al inicio del enunciado.
 
-![](img/)
+![](img/19.PNG)
 
 #### Escuela Colombiana de Ingeniería
 #### Procesos de desarrollo de software - PDSW
