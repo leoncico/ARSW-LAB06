@@ -268,12 +268,13 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 
 4. Agregue el botón 'Create new blueprint', de manera que cuando se oprima: 
 
-    [](img/2.4.4.png)
+    <img width="241" alt="2 4 4" src="https://github.com/user-attachments/assets/ee300f46-5434-4873-a589-c482b96fa21b">
+
 
 	* Se borre el canvas actual.
 
-    [](img/2.4.3.png)
-    
+    <img width="233" alt="2 4 3" src="https://github.com/user-attachments/assets/e12daff4-01fa-4fa2-b9b9-d46b7c4dda87">
+
 
     R/: usamos un metodo llamado clearCanvas para agilizar la limpiesa del canvas.
 
@@ -295,9 +296,10 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 
 	2. Hacer GET a este mismo recurso, para actualizar el listado de planos y el puntaje del usuario.
     
-    [](img/2.4.2.png)
+    <img width="282" alt="2 4 2" src="https://github.com/user-attachments/assets/f196c16e-d2a7-4142-bbc1-d49979a0bea2">
 
-    [](img/2.4.7.png)
+	<img width="662" alt="2 4 7" src="https://github.com/user-attachments/assets/319b96b3-8fab-4595-bac7-b729e04fb2e5">
+
 
     R/: Dentro de este metodo llamamos al metodo que obtiene la petición POST y tambien al metodo de updateBluePrintList que es el que actualiza el listado de planos y tambien el puntaje, haciendo uso del recurso GET.
 
