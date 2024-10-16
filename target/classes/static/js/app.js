@@ -12,9 +12,10 @@ var App = (function () {
     }
 
     function updateBlueprintsList(author) {
-        const canvas = document.getElementById("blueprintCanvas");
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // const canvas = document.getElementById("blueprintCanvas");
+        // const ctx = canvas.getContext("2d");
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        clearCanvas();
         currentBlueprint="";
         api.getBlueprintsByAuthor(author, function (blueprintsData) {
             if (!blueprintsData) {
@@ -65,13 +66,12 @@ var App = (function () {
     }
 
     function clearCanvas(){
-        const canvas = document.getElementById("blueprintCanvas");
-        const ctx = canvas.getContext("2d");
+        canvas = document.getElementById("blueprintCanvas");
+        ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     }
     
-    //Lo Separe del Draw para poder reutilizarlo Xd
     function redrawCanvas() {
         const canvas = document.getElementById("blueprintCanvas");
         const ctx = canvas.getContext("2d");
@@ -92,10 +92,9 @@ var App = (function () {
 
     }
 
-    //Ta igual solo que ahora llama a la funcion de manejar eventos
-    function initCanvas() {
-        const canvas = document.getElementById("blueprintCanvas");
 
+    function initCanvas() {
+        canvas = document.getElementById("blueprintCanvas");
         if (window.PointerEvent) {
             canvas.addEventListener("pointerdown", function (event) {
                 handleCanvasClick(event);
@@ -109,7 +108,6 @@ var App = (function () {
         }
     }
 
-    //Para capturar el Evento y decirle en que posición va a ir el nuevo punto
     function handleCanvasClick(event) {
         const canvas = document.getElementById("blueprintCanvas");
         const rect = canvas.getBoundingClientRect();
@@ -123,7 +121,6 @@ var App = (function () {
         }
     }
 
-    //Cosa para agregar nuevo punto  y redibujar con el nuevo segmento
     function addPointToCurrentBlueprint(x, y) {
         currentPoints.push({ x: x, y: y }); 
         //console.log(`New point added to ${currentBlueprint}: (${x}, ${y})`);
@@ -154,10 +151,10 @@ var App = (function () {
     }
 
     function newBlueprint(author, bpname){
-        const canvas = document.getElementById("blueprintCanvas");
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        //clearCanvas();
+        // const canvas = document.getElementById("blueprintCanvas");
+        // const ctx = canvas.getContext("2d");
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        clearCanvas();
         currentPoints = [];
         currentBlueprint = bpname;
         
@@ -172,9 +169,10 @@ var App = (function () {
     }
 
     function deleteBlueprint(author, currentBlueprint){
-        const canvas = document.getElementById("blueprintCanvas");
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // const canvas = document.getElementById("blueprintCanvas");
+        // const ctx = canvas.getContext("2d");
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        clearCanvas();
         api.deleteBlueprint(author,currentBlueprint).
         then(function(){
             updateBlueprintsList(author);

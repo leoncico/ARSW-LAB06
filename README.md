@@ -189,14 +189,62 @@ R/: Se crea la variable api la cuál se puede cambiar entre apliclient o apimock
 
 1. Agregue al canvas de la página un manejador de eventos que permita capturar los 'clicks' realizados, bien sea a través del mouse, o a través de una pantalla táctil. Para esto, tenga en cuenta [este ejemplo de uso de los eventos de tipo 'PointerEvent'](https://mobiforge.com/design-development/html5-pointer-events-api-combining-touch-mouse-and-pen) (aún no soportado por todos los navegadores) para este fin. Recuerde que a diferencia del ejemplo anterior (donde el código JS está incrustado en la vista), se espera tener la inicialización de los manejadores de eventos correctamente modularizado, tal [como se muestra en este codepen](https://codepen.io/hcadavid/pen/BwWbrw).
 
+![](img/2.1.png)
+
+R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los manejadores de eventos, en este caso donde el pointerdown se encarga de manejar los ocurridos en una pantalla tactil, mientras que el mousedown se va a encargar al momento que el usuario utilice el mouse.
+
 2. Agregue lo que haga falta en sus módulos para que cuando se capturen nuevos puntos en el canvas abierto (si no se ha seleccionado un canvas NO se debe hacer nada):
 	1. Se agregue el punto al final de la secuencia de puntos del canvas actual (sólo en la memoria de la aplicación, AÚN NO EN EL API!).
+    
+    ![](img/2.2.1.png)
+    ![](img/2.2.2.png)
+
+    R/: En este caso hemos hecho esta implementación por medio de 3 metodos, donde el primero va a capturar la posición donde se dio click, el segundo se va a encargar de añadir el punto en la posición capturada por el metodo anterior y el tercero va a dibujar el segmento desde el ultimo punto hasta el nuevo. Teniendo estos tres, ya podemos hacer el llamado del handleCanvasClick dentro del init para que se puedan agregar nuevos puntos una vez el usuario ingresa al canvas de un plano.
+
 	2. Se repinte el dibujo.
+    
+    Antes:
+
+    ![](img/2.2.3.png)
+    
+    Despues:
+
+    ![](img/2.2.4.png)
+
+    R/: Como podemos ver ya es posible repintar planos por medio de segmentos.
 
 3. Agregue el botón Save/Update. Respetando la arquitectura de módulos actual del cliente, haga que al oprimirse el botón:
 	1. Se haga PUT al API, con el plano actualizado, en su recurso REST correspondiente.
+
+    ![](img/2.3.1.png)
+
+    ![](img/2.3.2.png)
+
+    ![](img/2.3.7.png)
+
+    R/: Hacemos uso de ajax para hacer la petición PUT, de igual forma en la app llamamos al metodo update, en donde haciendo uso de promesas manejamos el orden en que se va a ejecutar, de forma que primero actualice en el back y luego se pueda visualizar en el front el cambio realizo.
+
 	2. Se haga GET al recurso /blueprints, para obtener de nuevo todos los planos realizados.
+
+    Antes:
+
+    ![](img/2.3.3.png)
+
+    Mensaje de confirmación: 
+    
+    ![](img/2.3.4.png)
+
+    Obtiene nuevamente todos los planos con el numero de puntos actualizado:
+
+    ![](img/2.3.5.png)
+
+    R/: Vemos como al llamar al metodo de UpdateBlueprintList que es el que maneja las peticiones get de la tabla obtenemos nuevamente la lista actualizada de los planos realizados con los puntos nuevos que se agregaron en este caso.
+
 	3. Se calculen nuevamente los puntos totales del usuario.
+
+    ![](img/2.3.6.png)
+
+    R/: Esta sumatoria tambien se actualiza a la par con ayuda del mismo metodo de UpdateBluePrintList, el cual tambien vuelve a hacer la sumatoria total.
 
 	Para lo anterior tenga en cuenta:
 
@@ -219,18 +267,62 @@ R/: Se crea la variable api la cuál se puede cambiar entre apliclient o apimock
 	* Como en este caso se tienen tres operaciones basadas en _callbacks_, y que las mismas requieren realizarse en un orden específico, tenga en cuenta cómo usar las promesas de JavaScript [mediante alguno de los ejemplos disponibles](http://codepen.io/hcadavid/pen/jrwdgK).
 
 4. Agregue el botón 'Create new blueprint', de manera que cuando se oprima: 
+
+    [](img/2.4.4.png)
+
 	* Se borre el canvas actual.
+
+    [](img/2.4.3.png)
+
+    R/: usamos un metodo llamado clearCanvas para agilizar la limpiesa del canvas.
+
 	* Se solicite el nombre del nuevo 'blueprint' (usted decide la manera de hacerlo).
+
+    [](img/2.4.5.png)
+    [](img/2.4.6.png)
+
+    R/: Al darle al botón de "create new blueprint" nos abre una ventana que nos pide el nombre del nuevo print para el autor en el que nos encontramos parados, al ingresar el nombre, el plano se agrega a la lista de blueprints.
 	
 	Esta opción debe cambiar la manera como funciona la opción 'save/update', pues en este caso, al oprimirse la primera vez debe (igualmente, usando promesas):
-
+!
 	1. Hacer POST al recurso /blueprints, para crear el nuevo plano.
+    
+    ![](img/2.4.1.png)
+
+    R/: De igual forma lo hacemos por medio de ajax, para realizar el post a la parte del controller, para crear un nuevo blueprint.
+
 	2. Hacer GET a este mismo recurso, para actualizar el listado de planos y el puntaje del usuario.
+    
+    [](img/2.4.2.png)
+    [](img/2.4.7.png)
+
+    R/: Dentro de este metodo llamamos al metodo que obtiene la petición POST y tambien al metodo de updateBluePrintList que es el que actualiza el listado de planos y tambien el puntaje, haciendo uso del recurso GET.
 
 5. Agregue el botón 'DELETE', de manera que (también con promesas):
+    
+    ![](img/2.5.1.png)
+
 	* Borre el canvas.
+
+    ![](img/2.5.2.png)
+
+    R/: Este metodo, va a borrar el canvas, va a llamar el Delete desde el apiclient para borrar desde el back y hace el recurso GET con el metodo de updateBluePrintList luego de que se haga borrado del back con ayuda de promesas.
+
 	* Haga DELETE del recurso correspondiente.
+
+    ![](img/2.5.3.png)
+    ![](img/2.5.4.png)
+    ![](img/2.5.5.png)
+    ![](img/2.5.6.png)
+
+    R/: Realizamos la petición al recurso Delete, para esto fue necesario realizar toda la implementación de esta petición, desde la persistencia hasta el apiclient.
+
 	* Haga GET de los planos ahora disponibles.
+
+    ![](img/2.5.7.png)
+    ![](img/2.5.8.png)
+
+    R/: Vemos como al hacer Delete, se actualiza la lista y se borra el plano correspondiente que en este caso "nuevo plano".
 
 ### Criterios de evaluación
 
