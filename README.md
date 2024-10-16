@@ -280,9 +280,10 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 
 	* Se solicite el nombre del nuevo 'blueprint' (usted decide la manera de hacerlo).
 
-    [](img/2.4.5.png)
+	<img width="655" alt="2 4 5" src="https://github.com/user-attachments/assets/9ed5dd5b-2e93-44cc-aa48-a5c4c6489f17">
 
-    [](img/2.4.6.png)
+    <img width="653" alt="2 4 6" src="https://github.com/user-attachments/assets/5124bd43-792d-4c67-bf39-afb5db1404ae">
+
 
     R/: Al darle al botón de "create new blueprint" nos abre una ventana que nos pide el nombre del nuevo print para el autor en el que nos encontramos parados, al ingresar el nombre, el plano se agrega a la lista de blueprints.
 	
@@ -290,7 +291,8 @@ R/: Como podemos ver, al momento de iniciar el canvas, hemos agregado los maneja
 !
 	1. Hacer POST al recurso /blueprints, para crear el nuevo plano.
     
-    ![](img/2.4.1.png)
+    <img width="263" alt="2 4 1" src="https://github.com/user-attachments/assets/3a58f7d1-beb6-4796-b6b6-87fae3a1f9ed">
+
 
     R/: De igual forma lo hacemos por medio de ajax, para realizar el post a la parte del controller, para crear un nuevo blueprint.
 
