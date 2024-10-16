@@ -1,5 +1,6 @@
 ### Escuela Colombiana de Ingeniería
 ### Arquiecturas de Software
+### Solucionado por Jeisson Steban Casallas y David Leonardo Piñeros
 
 ## Construción de un cliente 'grueso' con un API REST, HTML5, Javascript y CSS3. Parte I.
 
